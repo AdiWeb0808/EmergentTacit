@@ -32,15 +32,15 @@ export default function SourcesBrain() {
     return () => io.disconnect();
   }, []);
 
-  // 6 sources with irregular positions, distinct tube lengths, distinct entry points on the brain
+  // 6 sources with irregular positions. Ports stack from the chassis base upward for visual grounding.
   const brainX = 560;
   const sources = [
-    { key: "code",   label: "CODE",     x: 55,  y: 45,  port: 118, delay: 0,   floatDur: 3.4, floatDelay: 0 },
-    { key: "wiki",   label: "WIKI",     x: 235, y: 25,  port: 148, delay: 140, floatDur: 4.2, floatDelay: 0.6 },
-    { key: "chat",   label: "CHAT",     x: 90,  y: 145, port: 178, delay: 280, floatDur: 3.8, floatDelay: 1.1 },
-    { key: "schema", label: "SCHEMA",   x: 250, y: 175, port: 208, delay: 420, floatDur: 3.2, floatDelay: 0.3 },
-    { key: "pdf",    label: "PDF",      x: 65,  y: 290, port: 238, delay: 560, floatDur: 4.0, floatDelay: 0.9 },
-    { key: "drive",  label: "DRIVE",    x: 245, y: 315, port: 268, delay: 700, floatDur: 3.6, floatDelay: 0.2 },
+    { key: "code",   label: "CODE",     x: 55,  y: 45,  port: 200, delay: 0,   floatDur: 3.4, floatDelay: 0 },
+    { key: "wiki",   label: "WIKI",     x: 235, y: 25,  port: 225, delay: 140, floatDur: 4.2, floatDelay: 0.6 },
+    { key: "chat",   label: "CHAT",     x: 90,  y: 145, port: 250, delay: 280, floatDur: 3.8, floatDelay: 1.1 },
+    { key: "schema", label: "SCHEMA",   x: 250, y: 175, port: 275, delay: 420, floatDur: 3.2, floatDelay: 0.3 },
+    { key: "pdf",    label: "PDF",      x: 65,  y: 290, port: 300, delay: 560, floatDur: 4.0, floatDelay: 0.9 },
+    { key: "drive",  label: "DRIVE",    x: 245, y: 315, port: 325, delay: 700, floatDur: 3.6, floatDelay: 0.2 },
   ];
 
   return (
@@ -89,23 +89,27 @@ export default function SourcesBrain() {
           })}
 
           {/* Floating source icons */}
-          {sources.map((s) => (
-            <g key={s.key} transform={`translate(${s.x}, ${s.y})`}>
-              <g
-                className={`sb-source sb-src-${s.key}`}
-                style={{
-                  animationDuration: `${s.floatDur}s`,
-                  animationDelay: `${s.floatDelay}s`,
-                  ["--send-delay"]: `${s.delay}ms`,
-                }}
-              >
-                <SourceGlyph type={s.key} />
-                <text x="30" y="72" className="sb-label" textAnchor="middle">
-                  {s.label}
-                </text>
+          {sources.map((s) => {
+            // WIKI sits at the top, so put its label ABOVE the icon to avoid crossing its own tube.
+            const labelY = s.key === "wiki" ? -4 : 58;
+            return (
+              <g key={s.key} transform={`translate(${s.x}, ${s.y})`}>
+                <g
+                  className={`sb-source sb-src-${s.key}`}
+                  style={{
+                    animationDuration: `${s.floatDur}s`,
+                    animationDelay: `${s.floatDelay}s`,
+                    ["--send-delay"]: `${s.delay}ms`,
+                  }}
+                >
+                  <SourceGlyph type={s.key} />
+                  <text x="30" y={labelY} className="sb-label" textAnchor="middle">
+                    {s.label}
+                  </text>
+                </g>
               </g>
-            </g>
-          ))}
+            );
+          })}
 
           {/* Robotic brain / mainframe — UNCHANGED bulb */}
           <g transform={`translate(${brainX}, 60)`} className="sb-brain">
@@ -123,7 +127,7 @@ export default function SourcesBrain() {
             ))}
 
             {/* Six intake ports on the left side of the chassis */}
-            {[118, 148, 178, 208, 238, 268].map((py, i) => {
+            {[200, 225, 250, 275, 300, 325].map((py, i) => {
               const localY = py - 60; // translate context is at (brainX, 60)
               return (
                 <g key={i}>
