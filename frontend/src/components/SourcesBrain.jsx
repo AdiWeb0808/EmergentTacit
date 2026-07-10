@@ -35,12 +35,12 @@ export default function SourcesBrain() {
   // 6 sources with irregular positions, distinct tube lengths, distinct entry points on the brain
   const brainX = 560;
   const sources = [
-    { key: "code",   label: "CODE",     x: 55,  y: 45,  port: 88,  delay: 0,   floatDur: 3.4, floatDelay: 0 },
-    { key: "wiki",   label: "WIKI",     x: 235, y: 25,  port: 118, delay: 140, floatDur: 4.2, floatDelay: 0.6 },
-    { key: "chat",   label: "CHAT",     x: 90,  y: 145, port: 148, delay: 280, floatDur: 3.8, floatDelay: 1.1 },
-    { key: "schema", label: "SCHEMA",   x: 250, y: 175, port: 178, delay: 420, floatDur: 3.2, floatDelay: 0.3 },
-    { key: "pdf",    label: "PDF",      x: 65,  y: 290, port: 208, delay: 560, floatDur: 4.0, floatDelay: 0.9 },
-    { key: "drive",  label: "DRIVE",    x: 245, y: 315, port: 238, delay: 700, floatDur: 3.6, floatDelay: 0.2 },
+    { key: "code",   label: "CODE",     x: 55,  y: 45,  port: 118, delay: 0,   floatDur: 3.4, floatDelay: 0 },
+    { key: "wiki",   label: "WIKI",     x: 235, y: 25,  port: 148, delay: 140, floatDur: 4.2, floatDelay: 0.6 },
+    { key: "chat",   label: "CHAT",     x: 90,  y: 145, port: 178, delay: 280, floatDur: 3.8, floatDelay: 1.1 },
+    { key: "schema", label: "SCHEMA",   x: 250, y: 175, port: 208, delay: 420, floatDur: 3.2, floatDelay: 0.3 },
+    { key: "pdf",    label: "PDF",      x: 65,  y: 290, port: 238, delay: 560, floatDur: 4.0, floatDelay: 0.9 },
+    { key: "drive",  label: "DRIVE",    x: 245, y: 315, port: 268, delay: 700, floatDur: 3.6, floatDelay: 0.2 },
   ];
 
   return (
@@ -123,7 +123,7 @@ export default function SourcesBrain() {
             ))}
 
             {/* Six intake ports on the left side of the chassis */}
-            {[88, 118, 148, 178, 208, 238].map((py, i) => {
+            {[118, 148, 178, 208, 238, 268].map((py, i) => {
               const localY = py - 60; // translate context is at (brainX, 60)
               return (
                 <g key={i}>
@@ -136,22 +136,18 @@ export default function SourcesBrain() {
             {/* Dome */}
             <path d="M 20 220 L 20 130 Q 20 40 150 40 Q 280 40 280 130 L 280 220 Z" fill="url(#sb-chassis)" stroke="#5a4d38" strokeWidth="2" />
 
-            {/* Subtle dome highlights */}
-            <path d="M 30 200 L 30 130 Q 30 50 150 50" fill="none" stroke="#7a6a4d" strokeWidth="1" opacity="0.55" />
-
             {/* 4 amber-lit brain lobes */}
             <path d="M 60 80 Q 90 55 130 65 Q 145 80 130 105 Q 100 120 70 110 Q 55 95 60 80 Z" className="sb-lobe sb-lobe-1" />
             <path d="M 160 60 Q 200 55 230 75 Q 245 100 225 120 Q 190 130 165 115 Q 150 90 160 60 Z" className="sb-lobe sb-lobe-2" />
             <path d="M 60 130 Q 90 125 125 140 Q 140 165 120 190 Q 85 200 60 180 Q 45 155 60 130 Z" className="sb-lobe sb-lobe-3" />
             <path d="M 160 140 Q 200 135 230 150 Q 245 175 225 195 Q 190 205 160 190 Q 145 170 160 140 Z" className="sb-lobe sb-lobe-4" />
 
-            {/* Circuit traces */}
+            {/* Circuit traces (kept dim + subtle, no vertical divider) */}
             <g className="sb-traces" stroke="#FFB300" strokeWidth="1" fill="none" opacity="0.55">
               <path d="M 70 90 L 100 90 L 100 110 L 130 110" />
               <path d="M 180 70 L 210 90 L 200 110" />
               <path d="M 75 150 L 105 165 L 130 165" />
               <path d="M 175 155 L 210 170 L 220 180" />
-              <path d="M 150 90 L 150 155" strokeDasharray="3 3" />
             </g>
 
             {/* ONLINE indicator */}
@@ -191,20 +187,27 @@ const G_STROKE_HOT = "#FFB300";
 const G_DARK = "#0f0d09";
 
 function CodeGlyph() {
-  // A tiny terminal window with syntax bars
+  // A tiny terminal window with a clear ">_" prompt and { } brackets — unmistakably code
   return (
     <g className="sb-glyph">
       <rect x="0" y="0" width="60" height="46" rx="4" fill={G_DARK} stroke={G_STROKE} strokeWidth="1.2" />
       <circle cx="7" cy="7" r="1.6" fill="#7A3324" />
       <circle cx="13" cy="7" r="1.6" fill="#B27D00" />
       <circle cx="19" cy="7" r="1.6" fill="#3a3428" />
-      <rect x="6"  y="14" width="16" height="2.5" fill="#FFB300" rx="1" />
-      <rect x="24" y="14" width="10" height="2.5" fill="#D8CFB8" rx="1" />
-      <rect x="6"  y="20" width="8"  height="2.5" fill="#B27D00" rx="1" />
-      <rect x="16" y="20" width="24" height="2.5" fill="#D8CFB8" rx="1" />
-      <rect x="6"  y="26" width="30" height="2.5" fill="#D8CFB8" rx="1" opacity="0.7" />
-      <rect x="6"  y="32" width="12" height="2.5" fill="#FFB300" rx="1" />
-      <rect x="20" y="32" width="14" height="2.5" fill="#D8CFB8" rx="1" opacity="0.6" />
+      {/* Prompt: ">" then blinking underscore look */}
+      <text x="5"  y="21" fontFamily="'JetBrains Mono', 'Courier New', monospace" fontSize="7" fontWeight="700" fill="#FFB300">&gt;_</text>
+      {/* Curly braces line — instantly reads as code */}
+      <text x="15" y="21" fontFamily="'JetBrains Mono', 'Courier New', monospace" fontSize="7" fill="#D8CFB8">fn()</text>
+      <text x="35" y="21" fontFamily="'JetBrains Mono', 'Courier New', monospace" fontSize="7" fill="#FFB300">{"{"}</text>
+      {/* Indented line with syntax bars */}
+      <rect x="10" y="26" width="2" height="2" fill="#B27D00" />
+      <rect x="14" y="26" width="14" height="2" fill="#FFB300" rx="0.5" />
+      <rect x="30" y="26" width="8"  height="2" fill="#D8CFB8" rx="0.5" opacity="0.75" />
+      <rect x="10" y="31" width="2" height="2" fill="#B27D00" />
+      <rect x="14" y="31" width="8"  height="2" fill="#D8CFB8" rx="0.5" />
+      <rect x="24" y="31" width="18" height="2" fill="#FFB300" rx="0.5" opacity="0.85" />
+      {/* Closing brace */}
+      <text x="6" y="41" fontFamily="'JetBrains Mono', 'Courier New', monospace" fontSize="7" fill="#FFB300">{"}"}</text>
     </g>
   );
 }
@@ -227,48 +230,58 @@ function ChatGlyph() {
 }
 
 function SchemaGlyph() {
-  // 3 tiny table rectangles connected by lines
+  // A database cylinder connected to a small linked table — unmistakably a DB schema
   return (
     <g className="sb-glyph">
-      {/* connector lines behind */}
-      <path d="M 18 15 L 32 15" stroke={G_STROKE_HOT} strokeWidth="1.2" />
-      <path d="M 42 25 L 42 34" stroke={G_STROKE_HOT} strokeWidth="1.2" />
-      {/* table 1 */}
-      <rect x="0" y="4" width="18" height="22" rx="2" fill={G_DARK} stroke={G_STROKE} strokeWidth="1.1" />
-      <line x1="1" y1="10" x2="17" y2="10" stroke={G_STROKE_HOT} strokeWidth="0.8" />
-      <line x1="3" y1="14" x2="15" y2="14" stroke="#D8CFB8" strokeWidth="0.8" />
-      <line x1="3" y1="18" x2="15" y2="18" stroke="#D8CFB8" strokeWidth="0.8" opacity="0.6" />
-      <line x1="3" y1="22" x2="12" y2="22" stroke="#D8CFB8" strokeWidth="0.8" opacity="0.6" />
-      {/* table 2 */}
-      <rect x="32" y="4" width="20" height="22" rx="2" fill={G_DARK} stroke={G_STROKE} strokeWidth="1.1" />
-      <line x1="33" y1="10" x2="51" y2="10" stroke={G_STROKE_HOT} strokeWidth="0.8" />
-      <line x1="35" y1="14" x2="49" y2="14" stroke="#D8CFB8" strokeWidth="0.8" />
-      <line x1="35" y1="18" x2="49" y2="18" stroke="#D8CFB8" strokeWidth="0.8" opacity="0.6" />
-      <line x1="35" y1="22" x2="45" y2="22" stroke="#D8CFB8" strokeWidth="0.8" opacity="0.6" />
-      {/* table 3 */}
-      <rect x="32" y="32" width="24" height="16" rx="2" fill={G_DARK} stroke={G_STROKE} strokeWidth="1.1" />
-      <line x1="33" y1="38" x2="55" y2="38" stroke={G_STROKE_HOT} strokeWidth="0.8" />
-      <line x1="35" y1="42" x2="52" y2="42" stroke="#D8CFB8" strokeWidth="0.8" />
+      {/* Database cylinder */}
+      <g>
+        {/* body */}
+        <path d="M 0 8 L 0 32 Q 0 40 14 40 Q 28 40 28 32 L 28 8 Z" fill={G_DARK} stroke={G_STROKE} strokeWidth="1.2" />
+        {/* top ellipse */}
+        <ellipse cx="14" cy="8" rx="14" ry="4" fill={G_DARK} stroke={G_STROKE} strokeWidth="1.2" />
+        {/* stripes */}
+        <path d="M 0 16 Q 14 22 28 16" fill="none" stroke={G_STROKE} strokeWidth="0.9" opacity="0.75" />
+        <path d="M 0 24 Q 14 30 28 24" fill="none" stroke={G_STROKE} strokeWidth="0.9" opacity="0.55" />
+        {/* amber dot indicator */}
+        <circle cx="14" cy="8" r="1.6" fill={G_STROKE_HOT} />
+      </g>
+      {/* connector */}
+      <path d="M 28 22 L 38 22" stroke={G_STROKE_HOT} strokeWidth="1.3" />
+      <circle cx="28" cy="22" r="1.4" fill={G_STROKE_HOT} />
+      <circle cx="38" cy="22" r="1.4" fill={G_STROKE_HOT} />
+      {/* Linked table */}
+      <rect x="38" y="10" width="22" height="26" rx="2" fill={G_DARK} stroke={G_STROKE} strokeWidth="1.1" />
+      <line x1="39" y1="16" x2="59" y2="16" stroke={G_STROKE_HOT} strokeWidth="0.9" />
+      <line x1="41" y1="20" x2="57" y2="20" stroke="#D8CFB8" strokeWidth="0.9" />
+      <line x1="41" y1="24" x2="57" y2="24" stroke="#D8CFB8" strokeWidth="0.9" opacity="0.65" />
+      <line x1="41" y1="28" x2="52" y2="28" stroke="#D8CFB8" strokeWidth="0.9" opacity="0.65" />
+      <line x1="41" y1="32" x2="55" y2="32" stroke="#D8CFB8" strokeWidth="0.9" opacity="0.55" />
     </g>
   );
 }
 
 function PdfGlyph() {
-  // page with folded corner + a mini bar chart
+  // Page with folded corner + bold red "PDF" badge + bar chart — unmistakably a PDF
   return (
     <g className="sb-glyph">
       <path d="M 4 2 L 40 2 L 52 14 L 52 48 Q 52 50 50 50 L 6 50 Q 4 50 4 48 L 4 4 Q 4 2 6 2 Z" fill={G_DARK} stroke={G_STROKE} strokeWidth="1.2" />
       <path d="M 40 2 L 40 14 L 52 14" fill="none" stroke={G_STROKE} strokeWidth="1.2" />
-      {/* text lines */}
-      <line x1="9"  y1="18" x2="46" y2="18" stroke="#D8CFB8" strokeWidth="1.1" />
-      <line x1="9"  y1="22" x2="42" y2="22" stroke="#D8CFB8" strokeWidth="1.1" opacity="0.7" />
-      <line x1="9"  y1="26" x2="38" y2="26" stroke="#D8CFB8" strokeWidth="1.1" opacity="0.7" />
+      {/* Prominent brick-red PDF badge */}
+      <rect x="7" y="14" width="20" height="10" rx="1.5" fill="#7A3324" stroke="#7A3324" />
+      <text x="17" y="22" textAnchor="middle" fontFamily="'JetBrains Mono', 'Courier New', monospace" fontSize="7" fontWeight="700" fill="#F1EAD6">PDF</text>
+      {/* body text lines */}
+      <line x1="30" y1="18" x2="48" y2="18" stroke="#D8CFB8" strokeWidth="1" opacity="0.85" />
+      <line x1="30" y1="22" x2="46" y2="22" stroke="#D8CFB8" strokeWidth="1" opacity="0.65" />
+      <line x1="9"  y1="30" x2="48" y2="30" stroke="#D8CFB8" strokeWidth="1" opacity="0.7" />
+      <line x1="9"  y1="33.5" x2="42" y2="33.5" stroke="#D8CFB8" strokeWidth="1" opacity="0.55" />
       {/* mini bar chart */}
-      <line x1="9" y1="46" x2="9" y2="34" stroke={G_STROKE_HOT} strokeWidth="2" />
-      <line x1="15" y1="46" x2="15" y2="38" stroke={G_STROKE_HOT} strokeWidth="2" opacity="0.8" />
-      <line x1="21" y1="46" x2="21" y2="32" stroke={G_STROKE_HOT} strokeWidth="2" />
-      <line x1="27" y1="46" x2="27" y2="40" stroke={G_STROKE_HOT} strokeWidth="2" opacity="0.7" />
-      <line x1="33" y1="46" x2="33" y2="34" stroke={G_STROKE_HOT} strokeWidth="2" opacity="0.9" />
+      <line x1="10" y1="46" x2="10" y2="40" stroke={G_STROKE_HOT} strokeWidth="2" />
+      <line x1="16" y1="46" x2="16" y2="42" stroke={G_STROKE_HOT} strokeWidth="2" opacity="0.8" />
+      <line x1="22" y1="46" x2="22" y2="38" stroke={G_STROKE_HOT} strokeWidth="2" />
+      <line x1="28" y1="46" x2="28" y2="43" stroke={G_STROKE_HOT} strokeWidth="2" opacity="0.7" />
+      <line x1="34" y1="46" x2="34" y2="40" stroke={G_STROKE_HOT} strokeWidth="2" opacity="0.9" />
+      <line x1="40" y1="46" x2="40" y2="42" stroke={G_STROKE_HOT} strokeWidth="2" opacity="0.75" />
+      <line x1="46" y1="46" x2="46" y2="39" stroke={G_STROKE_HOT} strokeWidth="2" />
     </g>
   );
 }
@@ -305,23 +318,31 @@ function DriveGlyph() {
 }
 
 function WikiGlyph() {
-  // page with lines and a chain-link icon
+  // An open book with a bookmark ribbon and a "W" wiki mark — clearly a book, not a page
   return (
     <g className="sb-glyph">
-      <rect x="0" y="2" width="46" height="46" rx="3" fill={G_DARK} stroke={G_STROKE} strokeWidth="1.2" />
-      {/* title bar */}
-      <rect x="4" y="6" width="30" height="4" rx="1" fill={G_STROKE_HOT} />
-      {/* body lines */}
-      <line x1="4"  y1="16" x2="42" y2="16" stroke="#D8CFB8" strokeWidth="1.1" />
-      <line x1="4"  y1="21" x2="38" y2="21" stroke="#D8CFB8" strokeWidth="1.1" opacity="0.75" />
-      <line x1="4"  y1="26" x2="42" y2="26" stroke="#D8CFB8" strokeWidth="1.1" opacity="0.6" />
-      <line x1="4"  y1="31" x2="30" y2="31" stroke="#D8CFB8" strokeWidth="1.1" opacity="0.7" />
-      <line x1="4"  y1="36" x2="34" y2="36" stroke="#D8CFB8" strokeWidth="1.1" opacity="0.55" />
-      {/* small link icon */}
-      <g transform="translate(48, 6)">
-        <path d="M 0 6 A 5 5 0 0 1 5 1 L 8 1" stroke={G_STROKE_HOT} strokeWidth="1.3" fill="none" />
-        <path d="M 10 4 A 5 5 0 0 1 15 9 L 15 12" stroke={G_STROKE_HOT} strokeWidth="1.3" fill="none" />
-      </g>
+      {/* Book spine shadow */}
+      <path d="M 30 6 L 30 46" stroke={G_STROKE} strokeWidth="1.2" />
+      {/* Left page */}
+      <path d="M 4 8 Q 4 6 6 6 L 30 6 L 30 46 L 6 46 Q 4 46 4 44 L 4 8 Z" fill={G_DARK} stroke={G_STROKE} strokeWidth="1.2" />
+      {/* Right page */}
+      <path d="M 30 6 L 54 6 Q 56 6 56 8 L 56 44 Q 56 46 54 46 L 30 46 Z" fill={G_DARK} stroke={G_STROKE} strokeWidth="1.2" />
+      {/* "W" wiki mark on left page in amber */}
+      <text x="17" y="21" textAnchor="middle" fontFamily="'JetBrains Mono', 'Courier New', monospace" fontSize="10" fontWeight="700" fill={G_STROKE_HOT}>W</text>
+      {/* text lines on left page under W */}
+      <line x1="8" y1="27" x2="27" y2="27" stroke="#D8CFB8" strokeWidth="0.9" opacity="0.75" />
+      <line x1="8" y1="31" x2="24" y2="31" stroke="#D8CFB8" strokeWidth="0.9" opacity="0.55" />
+      <line x1="8" y1="35" x2="27" y2="35" stroke="#D8CFB8" strokeWidth="0.9" opacity="0.5" />
+      <line x1="8" y1="39" x2="20" y2="39" stroke="#D8CFB8" strokeWidth="0.9" opacity="0.5" />
+      {/* text lines on right page */}
+      <line x1="33" y1="14" x2="53" y2="14" stroke="#D8CFB8" strokeWidth="0.9" opacity="0.75" />
+      <line x1="33" y1="18" x2="50" y2="18" stroke="#D8CFB8" strokeWidth="0.9" opacity="0.55" />
+      <line x1="33" y1="22" x2="53" y2="22" stroke="#D8CFB8" strokeWidth="0.9" opacity="0.55" />
+      <line x1="33" y1="26" x2="47" y2="26" stroke="#D8CFB8" strokeWidth="0.9" opacity="0.45" />
+      <line x1="33" y1="34" x2="53" y2="34" stroke="#D8CFB8" strokeWidth="0.9" opacity="0.55" />
+      <line x1="33" y1="38" x2="49" y2="38" stroke="#D8CFB8" strokeWidth="0.9" opacity="0.45" />
+      {/* Bookmark ribbon hanging down from top */}
+      <path d="M 44 6 L 44 20 L 47 17 L 50 20 L 50 6 Z" fill="#7A3324" stroke="#7A3324" strokeWidth="0.8" />
     </g>
   );
 }
