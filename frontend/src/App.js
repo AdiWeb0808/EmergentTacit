@@ -121,7 +121,11 @@ function Landing() {
             <div className="window-body">
               <div className="hero-grid">
                 <div>
-                  <h1 className="hero-h1">Org AI.<br />Built like never before.</h1>
+                  <h1 className="hero-h1">
+                    <span className="brand-tacit">Tacit</span><span className="brand-os">OS</span>
+                    <br />
+                    <span className="brand-tagline">Org AI Finally Built Right</span>
+                  </h1>
                   <p className="hero-sub">
                     Tribal knowledge, connected with your tools to make teams 10x more effective.
                   </p>

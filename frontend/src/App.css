@@ -49,6 +49,9 @@ body{margin:0; background:var(--chassis); color:var(--ink); font-family:'Courier
 #hero .window-body{background:var(--screen); color:var(--paper);}
 .eyebrow{font-family:'VT323', monospace; font-size:17px; color:var(--phosphor); letter-spacing:.14em; margin:0 0 12px;}
 .hero-h1{font-family:'Special Elite', monospace; font-size:clamp(30px,5.6vw,54px); line-height:1.1; margin:0 0 14px; color:var(--paper);}
+.brand-tacit{font-size:1em; letter-spacing:.01em;}
+.brand-os{font-size:0.68em; color:var(--phosphor); letter-spacing:.02em; vertical-align:0.1em;}
+.brand-tagline{display:inline-block; margin-top:8px; font-size:0.68em; color:var(--paper); font-weight:400;}
 .hero-sub{font-size:clamp(15px,2vw,18px); line-height:1.5; max-width:44ch; color:#D8CFB8; margin:0 0 26px;}
 .cta-row{display:flex; gap:14px; flex-wrap:wrap;}
 .btn{font-family:'VT323', monospace; font-size:19px; letter-spacing:.05em; padding:12px 22px; border:2px solid var(--phosphor); color:var(--phosphor); background:transparent; text-decoration:none; display:inline-block; position:relative; overflow:hidden; transition:color .25s ease; cursor:pointer;}
