@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import "@/App.css";
 import heroBrain from "@/assets/hero-brain.png";
-import pillarBooks from "@/assets/pillar-1-final.png";
-import pillarBlocks from "@/assets/pillar-2-final.png";
-import pillarAgents from "@/assets/pillar-3-final.png";
+import pillarBooks from "@/assets/pillar-1.png";
+import pillarBlocks from "@/assets/pillar-2.png";
+import pillarAgents from "@/assets/pillar-3.png";
 import SourcesBrain from "@/components/SourcesBrain";
 
 const BOOT_LINES = [
