@@ -1,33 +1,39 @@
 # TacitOS Landing Page — PRD
 
 ## Original Problem
-User provided their current TacitOS landing HTML (retro "paper & ink + amber phosphor" theme)
-and asked to swap the hero and pillar images with two newly-uploaded illustrations:
-- Image 1: Retro brass/amber robotic brain machine with notes flowing into intake ports (has baked-in "SCAN.JPG" label)
-- Image 2: Open books/notebooks with chat bubbles rising above them
-- Image 3: mostly blank/cropped isometric fragment — not used
+Port the user's TacitOS landing HTML into React and iterate on visuals — swap hero + pillar
+images with user-provided illustrations, build an animated "Sources → Robotic Brain" pipeline
+centerpiece, and generate any missing pillar illustrations to match the retro paper + amber theme.
 
 ## Architecture
-- **Frontend only** React single-page landing (no backend logic in this task).
-- CRA app in `/app/frontend`.
-- Assets stored locally at `/app/frontend/src/assets/`:
-  - `hero-brain.png` (1.3 MB) — hero image
-  - `pillar-1.png` (346 KB) — Ambient Knowledge Capture pillar
-  - `pillar-3-tower.png` (117 KB) — unused (image was too cropped)
+- **Frontend-only** React CRA app in `/app/frontend`.
+- Local pillar/hero assets in `/app/frontend/src/assets/`:
+  - `hero-brain.png` — brass robotic brain (hero)
+  - `pillar-1-final.png` — books + chat bubbles (Ambient Knowledge Capture)
+  - `pillar-2-final.png` — modular blueprint cubes (Infinitely Scalable Skills) [generated via Nano Banana]
+  - `pillar-3-final.png` — mainframe portal + specialist agents (Specialist Agents)
+- All pillar images padded to a uniform 4:3 landscape with cream `#F1EAD6` background so the three cards read as one series.
+- Interactive centerpiece component: `/app/frontend/src/components/SourcesBrain.jsx` (inline animated SVG).
+- Backend has `EMERGENT_LLM_KEY` in `/app/backend/.env` for Nano Banana image gen.
 
-## Implemented (Jan 2026)
-- Ported the full TacitOS landing HTML into React (`src/App.js` + `src/App.css`) as a single component.
-- Live clock in menubar, retro CRT boot animation with 5 status lines, install-progress bar via IntersectionObserver, respects `prefers-reduced-motion`.
-- Sections: hero, tagline row (scoped/metered/audited/revocable), problem, chat_silos, three pillars, compound line, sources, specs, spend ledger, ownership, install/CTA, taskbar.
-- Swapped hero image → new brass robotic brain (no CSS filter; image already amber-toned).
-- Swapped pillar-1 image → new books+chat-bubbles illustration (no sepia filter).
-- Kept pillars 2 & 3 with existing external URLs + sepia filter (user did not supply usable replacements).
-- Removed duplicate overlay `SCAN.JPG` tag on hero (image contains it natively).
-- Updated `public/index.html` title + meta description.
-- All interactive/critical elements have `data-testid` attributes.
+## Implemented
+### Session 1 — image swap + porting
+- Full port of TacitOS landing HTML to React (`src/App.js` + `src/App.css`) with boot animation, live clock, sticky menubar, install progress bar.
+- Sections: hero, tagline row, problem, chat silos, three pillars, compound line, sources (now interactive), specs, spend ledger, ownership, install/CTA, taskbar.
+- Hero swap → brass robotic brain (no filter — image is already amber).
+
+### Session 2 — interactive centerpiece
+- `SourcesBrain.jsx`: 4 labeled source nodes → curved SVG pipes → central brain w/ 4 lit lobes → ONLINE indicator → caption reveal.
+- Staggered `stroke-dashoffset` transitions + traveling amber packets via CSS motion-path.
+- Triggered by `IntersectionObserver` (threshold 0.35). Respects `prefers-reduced-motion` — renders lit final state statically.
+
+### Session 3 — pillar illustrations
+- Nano Banana generated pillar-2 (modular blueprint cubes with amber accents) matching the paper + amber aesthetic.
+- User provided replacement illustrations for pillar-1 (books) and pillar-3 (specialist agents / mainframe portal).
+- Python PIL used to pad portrait uploads to 4:3 landscape with matching `#F1EAD6` background so all three pillar cards align.
+- Removed the old external `tacit-knowledge-engine.lovable.app` image URLs and their sepia filter class.
 
 ## Backlog / Next Actions
-- P1: Generate matching amber-accent line-art illustrations for pillar-2 (Infinitely Scalable Skills) and pillar-3 (Specialist Agents) to fully replace the sepia stock look — the third uploaded image was too cropped to use.
-- P2: Implement the interactive "Sources → Robotic Brain pipeline" centerpiece from the design plan (animated SVG pipes filling with amber packets on scroll, brain lobes lighting up).
-- P2: Consider `Space Grotesk` / `Inter` typography upgrade per the design plan doc (currently kept as `Special Elite` / `Courier Prime` / `VT323` to preserve the original retro look).
-- P3: Add pilot-request backend (FastAPI endpoint) instead of `mailto:` CTA.
+- P2: Wire "TALK TO US" CTAs to a real pilot-request form → FastAPI endpoint → email/CRM (currently `mailto:`).
+- P2: Optional typography upgrade to Space Grotesk / Inter per original design plan.
+- P3: SEO polish — OG/Twitter card meta, favicon, sitemap.

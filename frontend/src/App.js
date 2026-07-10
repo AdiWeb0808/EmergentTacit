@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import "@/App.css";
 import heroBrain from "@/assets/hero-brain.png";
-import pillarBooks from "@/assets/pillar-1.png";
+import pillarBooks from "@/assets/pillar-1-final.png";
+import pillarBlocks from "@/assets/pillar-2-final.png";
+import pillarAgents from "@/assets/pillar-3-final.png";
+import SourcesBrain from "@/components/SourcesBrain";
 
 const BOOT_LINES = [
   "YOUR ORGANIZATION AI — BOOTING",
@@ -222,7 +225,7 @@ function Landing() {
                 <div className="pillar-image" data-testid="pillar-1-image">
                   <img
                     src={pillarBooks}
-                    alt="Open books and notebooks with chat bubbles rising from them, illustrating captured knowledge"
+                    alt="Open books and notebooks with chat bubbles, docs, meetings, team chats, and data warehouse sources feeding into them — ambient knowledge capture"
                   />
                 </div>
                 <p className="kicker">Not just chat.</p>
@@ -237,10 +240,10 @@ function Landing() {
                 <div className="filename">skill_builder.app</div>
               </div>
               <div className="window-body">
-                <div className="pillar-image sepia">
+                <div className="pillar-image">
                   <img
-                    src="https://tacit-knowledge-engine.lovable.app/assets/pillar-2-CW6JHnU6.jpg"
-                    alt="Modular blocks expanding across a blueprint grid"
+                    src={pillarBlocks}
+                    alt="Modular blueprint cubes stacking and expanding with amber highlights on paper — modular skill acquisition"
                   />
                 </div>
                 <p className="kicker">No vendor roadmap. No ceiling.</p>
@@ -255,10 +258,10 @@ function Landing() {
                 <div className="filename">agent_layer.app</div>
               </div>
               <div className="window-body">
-                <div className="pillar-image sepia">
+                <div className="pillar-image">
                   <img
-                    src="https://tacit-knowledge-engine.lovable.app/assets/pillar-3-fMSd5gNG.jpg"
-                    alt="Small distinct characters emerging from a shared inkwell"
+                    src={pillarAgents}
+                    alt="Specialist agents — Geo-Planner, Key Architect, Data Analyst, Systems Eng, Robotics Spec — emerging from a shared mainframe portal"
                   />
                 </div>
                 <p className="kicker">One platform. Many specialists.</p>
@@ -279,35 +282,7 @@ function Landing() {
               <div className="filename">sources.cfg</div>
             </div>
             <div className="window-body">
-              <p className="lead-tiny">NOT JUST CHAT</p>
-              <div className="sources-row">
-                <div className="source-item">
-                  <Icon><path d="M6 3h9l4 4v14H6z" /><path d="M9 10h7M9 14h7M9 18h4" /></Icon>
-                  DOCS
-                </div>
-                <div className="source-item">
-                  <Icon><path d="M8 6 3 12l5 6M16 6l5 6-5 6" /></Icon>
-                  CODE
-                </div>
-                <div className="source-item">
-                  <Icon>
-                    <ellipse cx="12" cy="6" rx="7" ry="3" />
-                    <path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6" />
-                    <path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3" />
-                  </Icon>
-                  DATABASES
-                </div>
-                <div className="source-item">
-                  <Icon><path d="M4 5h16v11H8l-4 4z" /></Icon>
-                  CHAT
-                </div>
-              </div>
-              <p className="sales-point">
-                All of it becomes <span className="hl">one comprehensive knowledge layer.</span>
-              </p>
-              <p className="sub-note">
-                A zero-hallucination system builds specialist agents directly on top of it.
-              </p>
+              <SourcesBrain />
             </div>
           </section>
 
