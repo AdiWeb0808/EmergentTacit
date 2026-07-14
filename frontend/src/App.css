@@ -181,6 +181,12 @@ a{color:inherit;}
 
 /* ============================================================ */
 /* SOURCES → BRAIN pipeline (interactive centerpiece)            */
+/* Loop cycle: 5.5s                                              */
+/*   0.0–3.0s : pipes fill, packets travel, lobes light,         */
+/*              brain pulse, ONLINE flip, caption reveal         */
+/*   3.0–4.5s : hold lit state                                   */
+/*   4.5–5.0s : fade back to dim                                 */
+/*   5.0–5.5s : rest before next cycle                           */
 /* ============================================================ */
 .sb-root{width:100%;}
 .sb-eyebrow{margin:0 0 12px; text-align:left;}
@@ -189,16 +195,26 @@ a{color:inherit;}
 
 /* Base pipe: subtle dim outline */
 .sb-pipe-base{fill:none; stroke:#3a3428; stroke-width:5; stroke-linecap:round;}
-/* Amber fill pipe drawn via stroke-dashoffset */
+
+/* Pipe fill (default: empty) */
 .sb-pipe-fill{
   fill:none; stroke:var(--phosphor); stroke-width:2.4; stroke-linecap:round;
   stroke-dasharray:900; stroke-dashoffset:900;
-  transition:stroke-dashoffset 1.6s cubic-bezier(.4,.1,.3,1);
   filter:drop-shadow(0 0 3px rgba(255,179,0,.55));
 }
-.sb-root.is-active .sb-pipe-fill{stroke-dashoffset:0;}
+.sb-root.is-active .sb-pipe-fill{
+  animation:sb-loop-pipe 5.5s cubic-bezier(.4,.1,.3,1) infinite;
+  animation-delay:var(--sb-delay, 0ms);
+}
+@keyframes sb-loop-pipe{
+  0%   {stroke-dashoffset:900;}
+  30%  {stroke-dashoffset:0;}
+  82%  {stroke-dashoffset:0;}
+  91%  {stroke-dashoffset:900;}
+  100% {stroke-dashoffset:900;}
+}
 
-/* Traveling amber packet using CSS motion-path */
+/* Traveling amber packet via CSS motion-path */
 .sb-packet{
   fill:var(--phosphor);
   opacity:0;
@@ -206,15 +222,19 @@ a{color:inherit;}
   offset-distance:0%;
   -webkit-offset-distance:0%;
 }
-.sb-root.is-active .sb-packet{animation:sb-travel 1.6s cubic-bezier(.4,.1,.3,1) forwards;}
-@keyframes sb-travel{
-  0%  {opacity:0; offset-distance:0%;  -webkit-offset-distance:0%;}
-  8%  {opacity:1;}
-  92% {opacity:1;}
-  100%{opacity:0; offset-distance:100%; -webkit-offset-distance:100%;}
+.sb-root.is-active .sb-packet{
+  animation:sb-loop-travel 5.5s cubic-bezier(.4,.1,.3,1) infinite;
+  animation-delay:var(--sb-delay, 0ms);
+}
+@keyframes sb-loop-travel{
+  0%   {opacity:0; offset-distance:0%;  -webkit-offset-distance:0%;}
+  2%   {opacity:1;}
+  27%  {opacity:1; offset-distance:100%; -webkit-offset-distance:100%;}
+  30%  {opacity:0; offset-distance:100%; -webkit-offset-distance:100%;}
+  100% {opacity:0; offset-distance:0%;  -webkit-offset-distance:0%;}
 }
 
-/* Floating source icons */
+/* Floating source icons idle-float */
 .sb-source{
   animation-name:sb-float;
   animation-iteration-count:infinite;
@@ -224,65 +244,95 @@ a{color:inherit;}
   transform-origin:center;
 }
 @keyframes sb-float{
-  0%  {transform:translateY(0);}
-  100%{transform:translateY(-5px);}
-}
-/* Send pulse when packet fires */
-.sb-root.is-active .sb-source .sb-glyph{
-  animation:sb-send 1.6s ease var(--send-delay, 0ms) forwards;
-  transform-box:fill-box;
-  transform-origin:center;
-}
-@keyframes sb-send{
-  0%   {filter:none;}
-  10%  {filter:drop-shadow(0 0 6px rgba(255,179,0,.9));}
-  30%  {filter:drop-shadow(0 0 2px rgba(255,179,0,.4));}
-  100% {filter:drop-shadow(0 0 3px rgba(255,179,0,.6));}
+  0%   {transform:translateY(0);}
+  100% {transform:translateY(-5px);}
 }
 
-/* Small mono label under each icon */
+/* Small mono labels — cycle from dim brass to paper-white during "lit" phase */
 .sb-label{
   font-family:'VT323', monospace;
   font-size:13px;
   letter-spacing:0.08em;
   fill:#B27D00;
-  transition:fill 0.4s ease;
 }
-.sb-root.is-active .sb-label{fill:#D8CFB8;}
+.sb-root.is-active .sb-label{
+  animation:sb-loop-label 5.5s ease infinite;
+}
+@keyframes sb-loop-label{
+  0%,27%  {fill:#B27D00;}
+  35%,82% {fill:#D8CFB8;}
+  91%,100%{fill:#B27D00;}
+}
 
-/* Brain lobes — start dim, light up amber when packet arrives */
+/* Brain lobes — start dim, light up amber, hold, then fade back */
 .sb-lobe{
   fill:#2a2419;
   stroke:#B27D00;
   stroke-width:1.2;
-  transition:fill 0.55s ease, filter 0.55s ease;
 }
-.sb-root.is-active .sb-lobe-1{fill:#FFB300; filter:drop-shadow(0 0 10px rgba(255,179,0,.7)); transition-delay:1.5s;}
-.sb-root.is-active .sb-lobe-2{fill:#FFB300; filter:drop-shadow(0 0 10px rgba(255,179,0,.7)); transition-delay:1.75s;}
-.sb-root.is-active .sb-lobe-3{fill:#FFB300; filter:drop-shadow(0 0 10px rgba(255,179,0,.7)); transition-delay:2.0s;}
-.sb-root.is-active .sb-lobe-4{fill:#FFB300; filter:drop-shadow(0 0 10px rgba(255,179,0,.7)); transition-delay:2.25s;}
-
-.sb-traces{opacity:0.15; transition:opacity 0.6s ease 2.3s;}
-.sb-root.is-active .sb-traces{opacity:0.85;}
-
-.sb-root.is-active .sb-brain{animation:sb-pulse 1.4s ease 2.5s;}
-@keyframes sb-pulse{
-  0%  {filter:none;}
-  40% {filter:drop-shadow(0 0 18px rgba(255,179,0,.55));}
-  100%{filter:none;}
+.sb-root.is-active .sb-lobe-1,
+.sb-root.is-active .sb-lobe-2,
+.sb-root.is-active .sb-lobe-3,
+.sb-root.is-active .sb-lobe-4{
+  animation:sb-loop-lobe 5.5s ease infinite;
+}
+.sb-root.is-active .sb-lobe-1{animation-delay:0ms;}
+.sb-root.is-active .sb-lobe-2{animation-delay:250ms;}
+.sb-root.is-active .sb-lobe-3{animation-delay:500ms;}
+.sb-root.is-active .sb-lobe-4{animation-delay:750ms;}
+@keyframes sb-loop-lobe{
+  0%,27%   {fill:#2a2419; filter:none;}
+  32%,82%  {fill:#FFB300; filter:drop-shadow(0 0 10px rgba(255,179,0,.7));}
+  91%,100% {fill:#2a2419; filter:none;}
 }
 
-.sb-online-dot{fill:#B27D00; transition:fill 0.4s ease 2.6s;}
-.sb-online-text{fill:#B27D00; transition:fill 0.4s ease 2.6s;}
-.sb-root.is-active .sb-online-dot{fill:var(--phosphor); filter:drop-shadow(0 0 4px rgba(255,179,0,.9));}
-.sb-root.is-active .sb-online-text{fill:var(--phosphor);}
+/* Circuit traces fade in with brain */
+.sb-traces{opacity:0.15;}
+.sb-root.is-active .sb-traces{animation:sb-loop-traces 5.5s ease infinite;}
+@keyframes sb-loop-traces{
+  0%,42%   {opacity:0.15;}
+  50%,82%  {opacity:0.85;}
+  91%,100% {opacity:0.15;}
+}
 
+/* Full brain pulse once per cycle */
+.sb-root.is-active .sb-brain{animation:sb-loop-pulse 5.5s ease infinite;}
+@keyframes sb-loop-pulse{
+  0%,44%   {filter:none;}
+  50%      {filter:drop-shadow(0 0 18px rgba(255,179,0,.55));}
+  58%,100% {filter:none;}
+}
+
+/* ONLINE indicator flip */
+.sb-online-dot,.sb-online-text{fill:#B27D00;}
+.sb-root.is-active .sb-online-dot,
+.sb-root.is-active .sb-online-text{
+  animation:sb-loop-online 5.5s ease infinite;
+}
+@keyframes sb-loop-online{
+  0%,45%   {fill:#B27D00; filter:none;}
+  50%,82%  {fill:#FFB300; filter:drop-shadow(0 0 4px rgba(255,179,0,.9));}
+  91%,100% {fill:#B27D00; filter:none;}
+}
+
+/* Chassis dial blinker (always on) */
 .sb-blink{animation:sb-blink-anim 1.5s ease-in-out infinite;}
 @keyframes sb-blink-anim{0%,100%{opacity:1;}50%{opacity:.25;}}
 
-.sb-caption{opacity:0; transform:translateY(6px); transition:opacity .6s ease 2.8s, transform .6s ease 2.8s; text-align:center; margin-top:20px;}
-.sb-root.is-active .sb-caption{opacity:1; transform:translateY(0);}
-.sb-root .sb-caption + .sub-note{opacity:0; transition:opacity .6s ease 3.0s; text-align:center;}
-.sb-root.is-active .sb-caption + .sub-note{opacity:1;}
+/* Caption + sub-note reveal each cycle */
+.sb-caption{opacity:0; transform:translateY(6px); text-align:center; margin-top:20px;}
+.sb-root.is-active .sb-caption{animation:sb-loop-caption 5.5s ease infinite;}
+@keyframes sb-loop-caption{
+  0%,50%   {opacity:0; transform:translateY(6px);}
+  60%,82%  {opacity:1; transform:translateY(0);}
+  91%,100% {opacity:0; transform:translateY(6px);}
+}
+.sb-root .sb-caption + .sub-note{opacity:0; text-align:center;}
+.sb-root.is-active .sb-caption + .sub-note{animation:sb-loop-subnote 5.5s ease infinite;}
+@keyframes sb-loop-subnote{
+  0%,54%   {opacity:0;}
+  64%,82%  {opacity:1;}
+  91%,100% {opacity:0;}
+}
 
 @media (max-width:640px){.sb-svg{min-height:340px;}}
